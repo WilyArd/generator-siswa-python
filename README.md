@@ -234,10 +234,20 @@ python generate_siswa.py --count 1000 --seed 42 -o siswa_reproducible.xlsx
 
 ```
 siswa-generator/
-├── generate_siswa.py               # Script utama generator data siswa
-├── format sidigs murid-dapodik.xlsx # File template master Sidigs Dapodik
-├── siswa_sidigs_1000.xlsx          # File contoh 1.000 siswa siap pakai
+├── generate_siswa.py               # Entrypoint utama script generator
+├── generator/                      # Package modular (mudah di-maintain & di-fix)
+│   ├── __init__.py                 # Export modul utama
+│   ├── constants.py                # Konstanta (Agama, Pekerjaan, Transportasi, dsb.)
+│   ├── names.py                    # Dataset nama depan laki/perempuan & nama belakang
+│   ├── locations.py                # Data kota, wilayah, kode pos, dan alamat
+│   ├── jenjang.py                  # Konfigurasi jenjang sekolah (SMA, SMK, SMP, SD, TK, SLB)
+│   ├── student.py                  # Logika pembuatan data siswa, NIK, username, orang tua
+│   ├── excel.py                    # Manipulasi Excel (openpyxl, styling, Data Validation)
+│   └── cli.py                      # Antarmuka CLI & mode interaktif tanya-jawab
+├── format sidigs murid-dapodik.xlsx # File template master Sidigs Dapodik (di-ignore git)
+├── siswa_sidigs_1000.xlsx          # File contoh 1.000 siswa siap pakai (di-ignore git)
 ├── pyproject.toml                  # Konfigurasi packaging Python / uv
 ├── requirements.txt                # Daftar library dependensi
+├── .gitignore                      # Aturan pengabaian file Excel, venv, cache
 └── README.md                       # Petunjuk dokumentasi lengkap ini
 ```
