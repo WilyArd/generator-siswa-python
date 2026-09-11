@@ -44,31 +44,57 @@ Program Python otomatis untuk menghasilkan data dummy siswa dalam jumlah besar (
 
 ## 🚀 Instalasi & Persiapan
 
-Pastikan komputer Anda memiliki Python 3.9 atau lebih baru.
+Program ini **100% mendukung semua Sistem Operasi (Windows, macOS, dan Linux)** karena menggunakan modul murni Python (*Pure Python*) dan `openpyxl`.
 
-### Cara 1: Menggunakan `uv` (Sangat Cepat - Direkomendasikan)
-Jika sistem Anda memiliki `uv`:
+Pastikan komputer Anda telah terpasang **Python 3.9 atau lebih baru**.
+
+### Cara 1: Menggunakan `uv` (Sangat Cepat & Mendukung Semua OS)
+Jika Anda menggunakan [`uv`](https://github.com/astral-sh/uv):
 ```bash
-# Otomatis install dependensi dan jalankan
+# Otomatis download dependensi dan langsung jalankan (Windows / macOS / Linux)
 uv run generate_siswa.py --count 1000
 ```
 
 ### Cara 2: Menggunakan Python & `pip` Standar
+
+#### Langkah 1: Masuk ke folder proyek
 ```bash
-# 1. Masuk ke folder proyek
-cd /home/ard/Coding/siswa-generator
+cd siswa-generator
+```
 
-# 2. Buat virtual environment (jika belum ada)
-python3 -m venv .venv
+#### Langkah 2: Buat virtual environment (jika belum ada)
+- **Windows**:
+  ```cmd
+  python -m venv .venv
+  ```
+- **macOS / Linux**:
+  ```bash
+  python3 -m venv .venv
+  ```
 
-# 3. Aktifkan virtual environment
-# Linux/macOS (Bash/Zsh):
-source .venv/bin/activate
-# Linux (Fish Shell):
-source .venv/bin/activate.fish
+#### Langkah 3: Aktifkan virtual environment
+- **Windows (Command Prompt / CMD)**:
+  ```cmd
+  .venv\Scripts\activate.bat
+  ```
+- **Windows (PowerShell)**:
+  ```powershell
+  .venv\Scripts\Activate.ps1
+  ```
+  *(Jika muncul peringatan Execution Policy di PowerShell, jalankan sekali: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned`)*
+- **Windows (Git Bash) / macOS / Linux (Bash/Zsh)**:
+  ```bash
+  source .venv/bin/activate
+  ```
 
-# 4. Pasang library yang dibutuhkan
+#### Langkah 4: Pasang library yang dibutuhkan
+```bash
 pip install -r requirements.txt
+```
+
+Setelah itu, program siap dijalankan dengan:
+```bash
+python generate_siswa.py
 ```
 
 ---

@@ -28,22 +28,37 @@ if PROJECT_DIR not in sys.path:
 try:
     import openpyxl
 except ImportError:
-    venv_python = os.path.join(PROJECT_DIR, ".venv", "bin", "python")
-    if os.path.exists(venv_python) and os.path.realpath(sys.executable) != os.path.realpath(venv_python):
-        # Jalankan ulang secara transparan menggunakan Python dari .venv
-        os.execv(venv_python, [venv_python] + sys.argv)
+    # Deteksi path Python di .venv untuk Linux/macOS dan Windows
+    candidates = [
+        os.path.join(PROJECT_DIR, ".venv", "Scripts", "python.exe"),  # Windows
+        os.path.join(PROJECT_DIR, ".venv", "Scripts", "python"),      # Windows Git Bash / Cygwin
+        os.path.join(PROJECT_DIR, ".venv", "bin", "python"),          # Linux / macOS
+    ]
+    for venv_python in candidates:
+        if os.path.exists(venv_python) and os.path.realpath(sys.executable) != os.path.realpath(venv_python):
+            # Jalankan ulang secara transparan menggunakan Python dari .venv
+            if sys.platform == "win32":
+                import subprocess
+                code = subprocess.call([venv_python] + sys.argv)
+                sys.exit(code)
+            else:
+                os.execv(venv_python, [venv_python] + sys.argv)
 
     print("=" * 60)
     print("Error: Package 'openpyxl' belum terpasang di environment Python ini.")
     print("=" * 60)
     print("Solusi cepat, jalankan salah satu perintah berikut:")
-    print("  1. Menggunakan uv (direkomendasikan):")
+    print("  1. Menggunakan uv (direkomendasikan, semua OS):")
     print(f"     uv run python {' '.join(sys.argv)}")
     print("  2. Aktifkan virtual environment yang sudah ada:")
-    print("     source .venv/bin/activate")
+    if sys.platform == "win32":
+        print("     CMD        : .venv\\Scripts\\activate.bat")
+        print("     PowerShell : .venv\\Scripts\\Activate.ps1")
+    else:
+        print("     source .venv/bin/activate")
     print(f"     python {' '.join(sys.argv)}")
-    print("  3. Atau jalankan langsung via Python virtual environment:")
-    print(f"     .venv/bin/python {' '.join(sys.argv)}")
+    print("  3. Atau pasang dependensi:")
+    print("     pip install -r requirements.txt")
     print("=" * 60)
     sys.exit(1)
 
