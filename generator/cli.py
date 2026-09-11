@@ -9,6 +9,20 @@ from generator.jenjang import JENJANG_CONFIG, normalize_jenjang
 from generator.excel import generate_siswa_excel
 
 
+DEFAULT_EXPORT_DIR = "export_excel"
+
+
+def resolve_output_path(filename_or_path: str, count: int = 1000) -> str:
+    """
+    Memastikan file output disimpan ke dalam folder 'export_excel' jika hanya berupa nama file.
+    """
+    if not filename_or_path:
+        filename_or_path = f"hasil_siswa_{count}.xlsx"
+    if os.path.dirname(filename_or_path) == "":
+        return os.path.join(DEFAULT_EXPORT_DIR, filename_or_path)
+    return filename_or_path
+
+
 def interactive_prompt(default_template: str) -> dict:
     """
     Mode interaktif tanya-jawab jika script dijalankan tanpa argumen CLI.
@@ -23,8 +37,8 @@ def interactive_prompt(default_template: str) -> dict:
 
     # 2. Output filename
     default_out = f"hasil_siswa_{count}.xlsx"
-    out_input = input(f"2. Nama file output Excel [Default: {default_out}]: ").strip()
-    output_path = out_input if out_input else default_out
+    out_input = input(f"2. Nama file output Excel [Default: {default_out}] (tersimpan di folder '{DEFAULT_EXPORT_DIR}/'): ").strip()
+    output_path = resolve_output_path(out_input, count)
 
     # 3. Jenjang sekolah
     print("\n3. Pilih Jenjang Sekolah:")
@@ -73,7 +87,7 @@ def parse_args():
     )
     parser.add_argument("-n", "--count", type=int, default=None, help="Jumlah siswa yang akan digenerate (contoh: 1000, 1500, 2000)")
     parser.add_argument("-t", "--template", type=str, default="format sidigs murid-dapodik.xlsx", help="Path file template Excel")
-    parser.add_argument("-o", "--output", type=str, default=None, help="Nama/path file output Excel")
+    parser.add_argument("-o", "--output", type=str, default=None, help="Nama/path file output Excel (otomatis ke folder 'export_excel/' jika hanya nama file)")
     parser.add_argument("-l", "--level", "--jenjang", type=str, default="SMA", help="Jenjang sekolah: SMA, SMK, SMP, SD, TK, PAUD, MA, MTS, MI, SLB (default: SMA)")
     parser.add_argument("-m", "--mode", type=str, choices=["standard", "full"], default="standard", help="Mode pengisian: 'standard' (persis sample template) atau 'full' (lengkap termasuk Alamat, No KK, dsb.)")
     parser.add_argument("-r", "--rombel", "--kelas", type=str, default=None, dest="rombel", help="Tentukan nama kelas/rombel (opsional, contoh: 'X-A' atau 'XII TKJ 1' atau 'X-1, X-2')")
@@ -90,7 +104,7 @@ def main():
         params = interactive_prompt(args.template)
     else:
         count = args.count if args.count is not None else 1000
-        output = args.output if args.output is not None else f"hasil_siswa_{count}.xlsx"
+        output = resolve_output_path(args.output, count)
         params = {
             "template": args.template,
             "output": output,

@@ -5,6 +5,7 @@
 __pycache__/
 *.py[cod]
 
-# File Excel (tidak di-push)
+# File Excel & Folder Export (tidak di-push)
 *.xlsx
 *.xls
+export_excel/

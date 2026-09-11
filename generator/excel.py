@@ -48,6 +48,14 @@ def generate_siswa_excel(
     if seed is not None:
         random.seed(seed)
 
+    # Pastikan file disimpan ke folder export_excel jika tidak ditentukan folder lain
+    if os.path.dirname(output_path) == "":
+        output_path = os.path.join("export_excel", output_path)
+
+    out_dir = os.path.dirname(output_path)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
+
     print(f"\n[+] Memuat template: {template_path}")
     if not os.path.exists(template_path):
         raise FileNotFoundError(f"File template '{template_path}' tidak ditemukan!")

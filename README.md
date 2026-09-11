@@ -82,24 +82,25 @@ python generate_siswa.py
 ```
 Program akan menampilkan panduan tanya jawab:
 1. **Jumlah Siswa**: Masukkan jumlah yang diinginkan (tekan Enter untuk default 1.000 siswa).
-2. **Nama File Output**: Masukkan nama file Excel hasil (default: `hasil_siswa_{jumlah}.xlsx`).
+2. **Nama File Output**: Masukkan nama file Excel hasil (default: `hasil_siswa_{jumlah}.xlsx`). File otomatis disimpan ke dalam folder `export_excel/`.
 3. **Pilihan Jenjang**: Pilih angka 1–9 sesuai tingkatan sekolah yang diinginkan.
 4. **Mode Pengisian**:
    - `1` (Standar): Mengisi kolom data utama **beserta NIS dan NISN**, dengan kolom kelas tetap opsional (kosong secara default).
    - `2` (Lengkap / Full): Mengisi semua kolom tambahan Dapodik (termasuk Alamat Lengkap, No KK, Fisik BB/TB, Sekolah Asal, dsb.).
 5. **Kelas / Rombel Spesifik (Opsional)**:
    - Tekan **Enter** langsung jika ingin kolom kelas **tetap kosong** (sesuai template aslinya).
-   - Atau ketik nama kelas jika ingin ditentukan (misal: `X-A, X-B, X-C`).
+   - Atau ketik nama kelas jika ingin ditentukan (misal: `X-A, X-B, X-C` atau `XII TKJ 1`).
 
 ---
 
 ### 2. Mode Perintah Langsung (CLI)
 
-Gunakan perintah satu baris dengan berbagai parameter sesuai kebutuhan:
+Gunakan perintah satu baris dengan berbagai parameter sesuai kebutuhan. Seluruh output file Excel otomatis tersimpan di folder **`export_excel/`**:
 
 #### A. Generate 1.000 Siswa SMA Standar (NIS & NISN Terisi, Kelas Kosong)
 ```bash
 python generate_siswa.py --count 1000 -o siswa_1000.xlsx
+# Hasil tersimpan di: export_excel/siswa_1000.xlsx
 ```
 
 #### B. Generate 1.000 Siswa Standar dengan Penyesuaian Kelas Tertentu
@@ -190,11 +191,11 @@ Berdasarkan aturan template pada baris ke-2: **Tanda (\*) Wajib Diisi**.
    python generate_siswa.py --count 1000 -o siswa_siap_import.xlsx
    ```
 2. **Cek File Output**:
-   - Buka file `siswa_siap_import.xlsx` menggunakan Microsoft Excel, LibreOffice Calc, atau WPS Office.
+   - Buka file di folder **`export_excel/siswa_siap_import.xlsx`** menggunakan Microsoft Excel, LibreOffice Calc, atau WPS Office.
    - Pastikan data dimulai dari baris ke-7 dan baris 1–6 tetap utuh.
 3. **Upload ke Sistem Sidigs**:
    - Masuk ke menu **Import Siswa / Murid** di portal Sidigs.
-   - Pilih template Excel hasil generator tadi.
+   - Pilih template Excel dari folder `export_excel/` hasil generator tadi.
    - Klik **Upload / Proses Import**.
    - Karena format dropdown dan tipe datanya sudah 100% presisi, sistem tidak akan menampilkan error validasi tipe data.
 
@@ -220,7 +221,7 @@ source .venv/bin/activate && python generate_siswa.py --count 1000
 ```bash
 python generate_siswa.py --count 5000 -o siswa_5000.xlsx
 ```
-Program otomatis memperluas aturan Data Validation Excel hingga baris ke-5006.
+Program otomatis memperluas aturan Data Validation Excel hingga baris ke-5006 dan menyimpan hasilnya ke `export_excel/siswa_5000.xlsx`.
 
 ### Q4: Apakah saya bisa mereproduksi data yang sama persis?
 **Solusi:** Gunakan opsi `--seed`:
@@ -244,8 +245,9 @@ siswa-generator/
 │   ├── student.py                  # Logika pembuatan data siswa, NIK, username, orang tua
 │   ├── excel.py                    # Manipulasi Excel (openpyxl, styling, Data Validation)
 │   └── cli.py                      # Antarmuka CLI & mode interaktif tanya-jawab
+├── export_excel/                   # Folder penampung semua file Excel hasil generate (di-ignore git)
+│   └── siswa_sidigs_1000.xlsx      # File contoh 1.000 siswa siap pakai
 ├── format sidigs murid-dapodik.xlsx # File template master Sidigs Dapodik (di-ignore git)
-├── siswa_sidigs_1000.xlsx          # File contoh 1.000 siswa siap pakai (di-ignore git)
 ├── pyproject.toml                  # Konfigurasi packaging Python / uv
 ├── requirements.txt                # Daftar library dependensi
 ├── .gitignore                      # Aturan pengabaian file Excel, venv, cache
