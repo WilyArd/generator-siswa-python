@@ -14,10 +14,16 @@ DEFAULT_EXPORT_DIR = "export_excel"
 
 def resolve_output_path(filename_or_path: str, count: int = 1000) -> str:
     """
-    Memastikan file output disimpan ke dalam folder 'export_excel' jika hanya berupa nama file.
+    Memastikan file output disimpan ke dalam folder 'export_excel' jika hanya berupa nama file,
+    serta memastikan ekstensi '.xlsx' otomatis ditambahkan jika belum ada.
     """
     if not filename_or_path:
         filename_or_path = f"hasil_siswa_{count}.xlsx"
+    else:
+        filename_or_path = filename_or_path.strip()
+        if not filename_or_path.lower().endswith((".xlsx", ".xls")):
+            filename_or_path += ".xlsx"
+
     if os.path.dirname(filename_or_path) == "":
         return os.path.join(DEFAULT_EXPORT_DIR, filename_or_path)
     return filename_or_path

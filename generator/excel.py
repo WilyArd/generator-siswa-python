@@ -48,6 +48,10 @@ def generate_siswa_excel(
     if seed is not None:
         random.seed(seed)
 
+    # Pastikan ekstensi .xlsx jika belum memiliki ekstensi Excel
+    if not output_path.lower().endswith((".xlsx", ".xls")):
+        output_path += ".xlsx"
+
     # Pastikan file disimpan ke folder export_excel jika tidak ditentukan folder lain
     if os.path.dirname(output_path) == "":
         output_path = os.path.join("export_excel", output_path)
