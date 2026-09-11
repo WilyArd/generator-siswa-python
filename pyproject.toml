@@ -1,0 +1,13 @@
+[project]
+name = "siswa-generator"
+version = "1.0.0"
+description = "Generator data siswa otomatis format Sidigs Dapodik Excel"
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "openpyxl>=3.1.2",
+    "faker>=24.0.0",
+]
+
+[project.scripts]
+generate-siswa = "generate_siswa:main"
